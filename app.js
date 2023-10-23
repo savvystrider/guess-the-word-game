@@ -15,10 +15,6 @@ let correctLetters = [];
 let wrongLetters = [];
 let triesAmt = 1;
 
-// inputEls.forEach((input) => {
-//   input.addEventListener("click", focusEmptyElement);
-// });
-
 function shuffleWord() {
   let shuffledWord = selectedWord
     .split("")
