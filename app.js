@@ -61,7 +61,7 @@ function validateInput(e) {
       if (!correctLetters.includes(letter)) {
         correctLetters.push(letter);
         if (correctLetters.length === selectedWord.length) {
-          alert("You win!");
+          alert("🎉 You win! 🎉");
           startNewGame();
         }
       }
@@ -69,13 +69,13 @@ function validateInput(e) {
       if (!wrongLetters.includes(letter)) {
         wrongLetters.push(letter);
         if (wrongLetters.length === 6) {
-          alert("You Lose!");
+          alert("😭 You Lose! 😖");
           startNewGame();
         }
         mistakes.textContent = wrongLetters.join(", ");
         stars[triesAmt].className = "fa-solid fa-star";
         triesAmt++;
-        tries.textContent = triesAmt;
+        tries.textContent = `${triesAmt}/5:`;
       }
     }
     focusNextElement();
