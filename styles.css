@@ -57,6 +57,10 @@ body {
     border: 1px solid #4A5567;
 }
 
+.letter:focus {
+    outline: 1px solid #672171;
+}
+
 .btn {
     display: inline-block;
     cursor: pointer;

@@ -7,13 +7,16 @@ const tries = document.getElementById("tries");
 
 const inputContainer = document.querySelector(".input-container");
 
+const starContainer = document.getElementById("star-container");
+const stars = Array.from(starContainer.querySelectorAll(".fa-regular"));
+
 const words = ["flower", "apple", "candle", "manager"];
 
 let selectedWord = words[Math.floor(Math.random() * words.length)];
 
 let correctLetters = [];
 let wrongLetters = [];
-let triesAmt = 1;
+let triesAmt = 0;
 
 function shuffleWord() {
   let shuffledWord = selectedWord
@@ -38,38 +41,7 @@ function displayWord() {
     letterInput.setAttribute("maxLength", "1");
     letterInput.setAttribute("data-id", letter);
     inputContainer.appendChild(letterInput);
-    letterInput.addEventListener("click", focusEmptyElement);
     letterInput.addEventListener("keyup", validateInput);
-  }
-}
-
-function validateInput(e) {
-  if (e.keyCode >= 65 && e.keyCode <= 90) {
-    const letter = e.key;
-    if (selectedWord.includes(letter)) {
-      if (!correctLetters.includes(letter)) {
-        correctLetters.push(letter);
-        focusNextElement();
-      }
-    } else {
-      if (!wrongLetters.includes(letter)) {
-        wrongLetters.push(letter);
-        mistakes.textContent = wrongLetters.join(", ");
-        tries.textContent = triesAmt;
-        triesAmt++;
-        focusNextElement();
-      }
-    }
-  }
-}
-
-function focusEmptyElement() {
-  const inputEls = Array.from(document.querySelectorAll("input"));
-  const emptyInput = inputEls.find((input) => input.value === "");
-  if (emptyInput) {
-    emptyInput.focus();
-  } else {
-    inputEls[0].focus();
   }
 }
 
@@ -82,4 +54,58 @@ function focusNextElement() {
   input.focus();
 }
 
+function validateInput(e) {
+  if (e.keyCode >= 65 && e.keyCode <= 90) {
+    const letter = e.key;
+    if (selectedWord.includes(letter)) {
+      if (!correctLetters.includes(letter)) {
+        correctLetters.push(letter);
+        if (correctLetters.length === selectedWord.length) {
+          alert("You win!");
+          startNewGame();
+        }
+      }
+    } else {
+      if (!wrongLetters.includes(letter)) {
+        wrongLetters.push(letter);
+        if (wrongLetters.length === 6) {
+          alert("You Lose!");
+          startNewGame();
+        }
+        mistakes.textContent = wrongLetters.join(", ");
+        stars[triesAmt].className = "fa-solid fa-star";
+        triesAmt++;
+        tries.textContent = triesAmt;
+      }
+    }
+    focusNextElement();
+  }
+}
+
 displayWord();
+
+randomBtn.addEventListener("click", startNewGame);
+
+function startNewGame() {
+  correctLetters = [];
+  wrongLetters = [];
+  triesAmt = 0;
+  mistakes.innerHTML = "";
+  inputContainer.innerHTML = "";
+  stars.forEach((star) => (star.className = "fa-regular fa-star"));
+  tries.textContent = "";
+  displayWord();
+}
+
+resetBtn.addEventListener("click", resetCurrentGame);
+
+function resetCurrentGame() {
+  const inputEls = Array.from(document.querySelectorAll("input"));
+  inputEls.forEach((input) => (input.value = ""));
+  correctLetters = [];
+  wrongLetters = [];
+  triesAmt = 0;
+  tries.textContent = "";
+  mistakes.innerHTML = "";
+  stars.forEach((star) => (star.className = "fa-regular fa-star"));
+}
